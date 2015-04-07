@@ -1,4 +1,4 @@
-var tmhub = (function() {
+var tmhub = exports.tmhub = (function() {
     var moduleInfo = {};
 
     function loadModuleInfo() {
