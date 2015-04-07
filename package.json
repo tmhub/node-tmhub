@@ -1,0 +1,14 @@
+{
+  "name": "node-tmhub",
+  "version": "0.1.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tmhub/node-tmhub.git"
+  },
+  "keywords": [
+    "cli",
+    "command"
+  ],
+  "private": true
+}
