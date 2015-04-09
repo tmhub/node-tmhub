@@ -1,3 +1,6 @@
+var exec = require('child_process').exec,
+    fs = require('fs');
+
 var tmhub = exports.tmhub = (function() {
     var moduleInfo = {};
 
