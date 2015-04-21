@@ -126,7 +126,7 @@ var tmhub = exports.tmhub = (function() {
                 }
             });
         },
-        composerRefresh: function() {
+        composerRefresh: function(cb) {
             fs.exists('composer.lock', function(exists) {
                 var cmd = exists ? 'composer update' : 'composer install';
                 console.log(cmd + ' is running');
@@ -177,10 +177,10 @@ var tmhub = exports.tmhub = (function() {
          */
         createReleaseDraft: function (cb) {
 
+            var version = this.getModuleInfo().version;
             var github = getGithub(function(){
 
                 var merg = ' -> ';
-                var version = this.getModuleInfo().version;
                 console.log(merg + 'composer.json version ' + version);
 
                 console.log(merg + 'List exist releases');
@@ -224,7 +224,8 @@ var tmhub = exports.tmhub = (function() {
                                 draft: true,
                                 prerelease: true
                             }, function(err, res){
-                                console.log(res);
+                                console.log(res.meta.status);
+                                console.log(res.meta.location);
                                 id = res.id
                             });
                         });
