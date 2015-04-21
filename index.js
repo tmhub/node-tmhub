@@ -118,7 +118,26 @@ var tmhub = exports.tmhub = (function() {
                 }
             });
         },
-        keygen: function () {
+        makeDirs: function(folders) {
+            folders = folders || ['vendor', 'code'];
+            folders.forEach(function(folder) {
+                if (!fs.existsSync(folder)) {
+                    fs.mkdirSync(folder, function(e) { console.log(e); });
+                }
+            });
+        },
+        composerRefresh: function() {
+            fs.exists('composer.lock', function(exists) {
+                var cmd = exists ? 'composer update' : 'composer install';
+                console.log(cmd + ' is running');
+                exec(cmd, function (err, stdout, stderr) {
+                    console.log(stdout);
+                    console.log(stderr);
+                    cb(err);
+                });
+            });
+        },
+        keygen: function(cb) {
             console.log('Generate file key ');
 
             var username = readlineSync.question("Username : "),
@@ -139,12 +158,29 @@ var tmhub = exports.tmhub = (function() {
                 fs.writeFile(filename, ciphertext);
             });
         },
-        createReleaseDraft: function () {
+        gitpushtags : function (cb) {
+            var cmd = 'git push --tags';
+            console.log('Exec ' + cmd);
+            exec(cmd, function (err, stdout, stderr) {
+                console.log(stdout);
+                console.log(stderr);
+                cb(err);
+            });
+        },
+        /**
+         * https://www.npmjs.org/package/github
+         * https://github.com/mikedeboer/node-github
+         * https://github.com/mikedeboer/node-github/pull/161
+         * https://mikedeboer.github.io/node-github/#releases
+         * https://developer.github.com/v3/repos/releases/#upload-a-release-asset
+         *
+         */
+        createReleaseDraft: function (cb) {
 
             var github = getGithub(function(){
 
                 var merg = ' -> ';
-                var version = tm.getModuleInfo().version;
+                var version = this.getModuleInfo().version;
                 console.log(merg + 'composer.json version ' + version);
 
                 console.log(merg + 'List exist releases');
@@ -215,12 +251,12 @@ var tmhub = exports.tmhub = (function() {
                     //     // console.log(res);
                     //     var isUpload = false;
                     //     for (var i in res) {
-                    //         if (res[i].name == tm.getArchiveName()) {
+                    //         if (res[i].name == this.getArchiveName()) {
                     //             isUpload = true;
                     //         }
                     //     }
 
-                    //     console.log(tm.getArchiveName() + ' is ' + (isUpload ? '' : ' not ') + ' exist');
+                    //     console.log(this.getArchiveName() + ' is ' + (isUpload ? '' : ' not ') + ' exist');
                     // });
                     //
                     // console.log('github.releases.uploadAssets');
