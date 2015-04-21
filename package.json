@@ -10,5 +10,10 @@
     "cli",
     "command"
   ],
-  "private": true
+  "private": true,
+  "dependencies": {
+      "github": "*",
+      "readline-sync": "*",
+      "triplesec": "*"
+  }
 }
