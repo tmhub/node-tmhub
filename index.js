@@ -126,7 +126,7 @@ var tmhub = exports.tmhub = (function() {
                 }
             });
         },
-        composerRefresh: function(cb) {
+        composerRefresh: function() {
             fs.exists('composer.lock', function(exists) {
                 var cmd = exists ? 'composer update' : 'composer install';
                 console.log(cmd + ' is running');
@@ -178,6 +178,7 @@ var tmhub = exports.tmhub = (function() {
         createReleaseDraft: function (cb) {
 
             var version = this.getModuleInfo().version;
+            var repo = this.getModuleInfo().shortname;
             var github = getGithub(function(){
 
                 var merg = ' -> ';
@@ -186,7 +187,7 @@ var tmhub = exports.tmhub = (function() {
                 console.log(merg + 'List exist releases');
                 github.releases.listReleases({
                     owner: 'tmhub',
-                    repo: 'askit'
+                    repo: repo
                 }, function(err, releases){
                     // console.log(releases);
                     var id = false;
@@ -217,15 +218,14 @@ var tmhub = exports.tmhub = (function() {
                             // cb(err);
                             github.releases.createRelease({
                                 owner: 'tmhub',
-                                repo: 'askit',
+                                repo: repo,
                                 tag_name: version,
                                 name: 'Version ' + version,
                                 body: body,
                                 draft: true,
                                 prerelease: true
                             }, function(err, res){
-                                console.log(res.meta.status);
-                                console.log(res.meta.location);
+                                console.log(res);
                                 id = res.id
                             });
                         });
@@ -233,7 +233,7 @@ var tmhub = exports.tmhub = (function() {
 
                     // github.releases.getRelease({
                     //     owner: 'tmhub',
-                    //     repo: 'askit',
+                    //     repo: repo,
                     //     id: id
                     // }, function(err, res){
                     //     console.log(res)
@@ -245,7 +245,7 @@ var tmhub = exports.tmhub = (function() {
 
                     // github.releases.listAssets({
                     //     owner: 'tmhub',
-                    //     repo: 'askit',
+                    //     repo: repo,
                     //     id: id
                     // }, function(err, res){
                     //     // console.log(JSON.stringify(res));
