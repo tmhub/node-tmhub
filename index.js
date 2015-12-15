@@ -93,6 +93,8 @@ var tmhub = exports.tmhub = (function() {
             var content = {
                 "minimum-stability": "dev",
                 "require": {
+                    "magento-hackathon/composer-command-integrator":"*",
+                    "magento-hackathon/magento-composer-installer": "*",
                     "%packagename%": "*"
                 },
                 "repositories": [
