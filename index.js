@@ -100,6 +100,10 @@ var tmhub = exports.tmhub = (function() {
                 "repositories": [
                     {
                         "type": "composer",
+                        "url": "http://packages.firegento.com"
+                    },
+                    {
+                        "type": "composer",
                         "url": "http://tmhub.github.io/packages"
                     }
                 ],
