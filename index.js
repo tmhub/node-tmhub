@@ -128,7 +128,7 @@ var tmhub = exports.tmhub = (function() {
                 }
             });
         },
-        composerRefresh: function() {
+        composerRefresh: function(cb) {
             fs.exists('composer.lock', function(exists) {
                 var cmd = exists ? 'composer update' : 'composer install';
                 console.log(cmd + ' is running');
